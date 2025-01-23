@@ -43,6 +43,7 @@ const SongList = () => {
           <Grid item xs={12} sm={6} md={4} lg={3} key={song.id}>
             <Card
               sx={{
+                position: 'relative', // Ensures the cart icon positions correctly
                 borderRadius: '16px',
                 boxShadow: 4,
                 transition: 'transform 0.3s ease',
@@ -58,19 +59,22 @@ const SongList = () => {
                   {song.artist}
                 </Typography>
               </CardContent>
-              <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
-                <IconButton
-                  onClick={() => handleAddToCart(song)}
-                  sx={{
-                    color: '#fff',
-                    padding: '10px',
-                    borderRadius: '50%',
-                    '&:hover': { backgroundColor: '#FF4081' },
-                  }}
-                >
-                  <AddShoppingCartIcon />
-                </IconButton>
-              </Box>
+              {/* Cart Icon */}
+              <IconButton
+                onClick={() => handleAddToCart(song)}
+                sx={{
+                  position: 'absolute',
+                  bottom: 16,
+                  right: 16,
+                  backgroundColor: '#00B8D4',
+                  color: '#fff',
+                  padding: '10px',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                  '&:hover': { backgroundColor: '#FF4081' },
+                }}
+              >
+                <AddShoppingCartIcon />
+              </IconButton>
             </Card>
           </Grid>
         ))}
