@@ -3,16 +3,16 @@ import { Facebook, Instagram, Twitter, LinkedIn } from '@mui/icons-material';
 
 const Footer = () => {
   return (
-    <Box sx={{ backgroundColor: 'black', padding: '40px 0', color: 'white' }}>
+    <Box sx={{ backgroundColor: '#1c1c1c', padding: '40px 20px', color: 'white' }}>
       <Container maxWidth="lg">
         {/* Footer Top Section */}
         <Grid container spacing={4} sx={{ marginBottom: '20px' }}>
           {/* Company Info */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: '#1DB954' }}>
               SingBae Store
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" sx={{ color: '#cccccc' }}>
               The ultimate destination for exclusive music and entertainment! 
               Experience the best tunes and discounts right here.
             </Typography>
@@ -20,18 +20,18 @@ const Footer = () => {
 
           {/* Quick Links */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: '#1DB954' }}>
               Quick Links
             </Typography>
-            <Typography variant="body2">Home</Typography>
-            <Typography variant="body2">Shop</Typography>
-            <Typography variant="body2">Contact Us</Typography>
-            <Typography variant="body2">Privacy Policy</Typography>
+            <Typography variant="body2" sx={{ color: '#cccccc' }}>Home</Typography>
+            <Typography variant="body2" sx={{ color: '#cccccc' }}>Shop</Typography>
+            <Typography variant="body2" sx={{ color: '#cccccc' }}>Contact Us</Typography>
+            <Typography variant="body2" sx={{ color: '#cccccc' }}>Privacy Policy</Typography>
           </Grid>
 
           {/* Social Media Links */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: '#1DB954' }}>
               Follow Us
             </Typography>
             <Box sx={{ display: 'flex', gap: '15px' }}>
@@ -68,8 +68,8 @@ const Footer = () => {
         </Grid>
 
         {/* Footer Bottom Section */}
-        <Box sx={{ textAlign: 'center', borderTop: '1px solid #ffffff', paddingTop: '20px' }}>
-          <Typography variant="body2">
+        <Box sx={{ textAlign: 'center', borderTop: '1px solid #333', paddingTop: '20px' }}>
+          <Typography variant="body2" sx={{ color: '#777' }}>
             &copy; 2025 SingBae Store. All rights reserved.
           </Typography>
         </Box>

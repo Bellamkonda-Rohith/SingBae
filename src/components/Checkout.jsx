@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetCart } from '../Redux/cartSlice';
 import {
   Box,
   Typography,
@@ -10,11 +11,16 @@ import {
   CardContent,
   FormControlLabel,
   Checkbox,
+  IconButton,
+  Container,
+  Tooltip,
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cart);
 
   const [email, setEmail] = useState('');
@@ -23,8 +29,6 @@ const Checkout = () => {
   const [isPhoneSelected, setIsPhoneSelected] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [contactInfo, setContactInfo] = useState(null);
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validatePhone = (phone) => /^[0-9]{10}$/.test(phone);
@@ -52,38 +56,53 @@ const Checkout = () => {
     }
 
     if (isValid) {
-      setContactInfo({
-        type: isEmailSelected ? 'email' : 'phone',
-        value: isEmailSelected ? email : phone,
-      });
-      setIsSubmitted(true); // Navigate to order summary view
+      // Store the cart details in local storage before resetting the cart
+      localStorage.setItem('orderDetails', JSON.stringify(cartItems));
+
+      // Reset the cart after successful checkout
+      dispatch(resetCart());
+
+      // Navigate to order summary view
+      navigate('/OrderSummary');
     }
   };
 
-  if (isSubmitted && contactInfo) {
-    navigate('/OrderSummary');
-  }
+  const handleBackToCart = () => {
+    navigate('/cart');
+  };
+
+  const handleAddItems = () => {
+    navigate('/'); // Navigate back to the homepage to add more items
+  };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        padding: 3,
-        background: 'linear-gradient(135deg, #00b8d4, #ff4081)', // Soft gradient background
-      }}
-    >
+    <Container sx={{ padding: { xs: 2, md: 4 }, background: '#121212', minHeight: '100vh', color: '#fff' }}>
+      {/* Back Button */}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 2 }}>
+        <Tooltip title="Back to Cart">
+          <IconButton
+            color="primary"
+            onClick={handleBackToCart}
+            sx={{
+              color: '#1DB954', 
+              '&:hover': { backgroundColor: '#1ED760' },
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+
       <Typography
         variant="h4"
         gutterBottom
         sx={{
-          fontWeight: 600,
-          color: '#fff',
+          fontWeight: 'bold',
           textAlign: 'center',
-          fontFamily: 'Poppins, sans-serif',
+          color: '#1DB954',
+          marginBottom: 4,
+          fontFamily: 'Circular, sans-serif',
+          fontSize: { xs: '2rem', md: '2.5rem' }, // Responsive font size
         }}
       >
         Checkout
@@ -92,15 +111,15 @@ const Checkout = () => {
       <Grid container spacing={3} sx={{ maxWidth: 1200, width: '100%' }}>
         {/* Cart Summary Section */}
         <Grid item xs={12}>
-          <Card sx={{ borderRadius: 3, boxShadow: 3, padding: 2 }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00b8d4', marginBottom: 2 }}>
+          <Card sx={{ borderRadius: 3, boxShadow: 3, padding: 2, backgroundColor: '#181818' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1DB954', marginBottom: 2 }}>
               Cart Summary
             </Typography>
             {cartItems.map((item) => (
-              <Card key={item.id} sx={{ borderRadius: 3, boxShadow: 2, marginBottom: 1 }}>
+              <Card key={item.id} sx={{ borderRadius: 3, boxShadow: 2, marginBottom: 1, backgroundColor: '#222' }}>
                 <CardContent>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#fff' }}>
                       {item.title} x {item.quantity}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#757575' }}>
@@ -110,7 +129,7 @@ const Checkout = () => {
                 </CardContent>
               </Card>
             ))}
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00b8d4', marginTop: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1DB954', marginTop: 2 }}>
               Total: ${cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
             </Typography>
           </Card>
@@ -118,8 +137,8 @@ const Checkout = () => {
 
         {/* Select Discount Option Section */}
         <Grid item xs={12}>
-          <Card sx={{ borderRadius: 3, boxShadow: 3, padding: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00b8d4', marginBottom: 2 }}>
+          <Card sx={{ borderRadius: 3, boxShadow: 3, padding: 3, backgroundColor: '#181818' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1DB954', marginBottom: 2 }}>
               Select Discount Option
             </Typography>
 
@@ -134,7 +153,7 @@ const Checkout = () => {
                     }
                   }}
                   sx={{
-                    color: '#00B8D4',
+                    color: '#1DB954',
                     '&.Mui-checked': {
                       color: '#FF4081', // Muted pinkish purple
                     },
@@ -142,6 +161,7 @@ const Checkout = () => {
                 />
               }
               label="100% Free Downloads with Email"
+              sx={{ color: '#fff' }}
             />
             {isEmailSelected && (
               <TextField
@@ -154,8 +174,11 @@ const Checkout = () => {
                 helperText={emailError ? 'Please enter a valid email address.' : ''}
                 sx={{
                   marginBottom: 2,
-                  '& .MuiOutlinedInput-root': { borderRadius: 3 },
-                  '& .MuiInputLabel-root': { color: '#00B8D4' },
+                  '& .MuiOutlinedInput-root': { borderRadius: 3, color: '#fff' },
+                  '& .MuiInputLabel-root': { color: '#1DB954' },
+                }}
+                InputProps={{
+                  type: 'email',
                 }}
               />
             )}
@@ -171,7 +194,7 @@ const Checkout = () => {
                     }
                   }}
                   sx={{
-                    color: '#00B8D4',
+                    color: '#1DB954',
                     '&.Mui-checked': {
                       color: '#FF4081', // Muted pinkish purple
                     },
@@ -179,6 +202,7 @@ const Checkout = () => {
                 />
               }
               label="100% Free Downloads with Phone Number"
+              sx={{ color: '#fff' }}
             />
             {isPhoneSelected && (
               <TextField
@@ -186,13 +210,16 @@ const Checkout = () => {
                 variant="outlined"
                 fullWidth
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))} // Allow only numbers
                 error={phoneError}
                 helperText={phoneError ? 'Please enter a valid 10-digit phone number.' : ''}
                 sx={{
                   marginBottom: 2,
-                  '& .MuiOutlinedInput-root': { borderRadius: 3 },
-                  '& .MuiInputLabel-root': { color: '#00B8D4' },
+                  '& .MuiOutlinedInput-root': { borderRadius: 3, color: '#fff' },
+                  '& .MuiInputLabel-root': { color: '#1DB954' },
+                }}
+                InputProps={{
+                  type: 'tel',
                 }}
               />
             )}
@@ -215,10 +242,30 @@ const Checkout = () => {
             >
               Complete Payment
             </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleAddItems}
+              fullWidth
+              sx={{
+                marginTop: 2,
+                padding: '12px',
+                borderRadius: 3,
+                fontWeight: 500,
+                backgroundColor: '#1DB954',
+                '&:hover': {
+                  backgroundColor: '#1ED760',
+                  transform: 'scale(1.05)',
+                },
+                transition: 'all 0.3s ease',
+              }}
+            >
+              Add More Items
+            </Button>
           </Card>
         </Grid>
       </Grid>
-    </Box>
+    </Container>
   );
 };
 

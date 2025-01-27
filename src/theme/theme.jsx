@@ -4,46 +4,50 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#00B8D4', // Vibrant cyan
+      main: '#1DB954', // Spotify green
     },
     secondary: {
-      main: '#FF4081', // Pinkish purple
+      main: '#1ED760', // Slightly lighter green for contrast
     },
     background: {
-      default: 'linear-gradient(135deg, #00B8D4, #FF4081)', // Gradient background
-      paper: '#ffffff', // Light background for paper components
+      default: '#121212', // Dark background
+      paper: '#181818', // Slightly lighter dark background for paper components
     },
     text: {
-      primary: '#212121', // Dark text color for readability
-      secondary: '#757575', // Secondary text color
+      primary: '#FFFFFF', // Light text color for dark background
+      secondary: '#B3B3B3', // Secondary text color for less emphasis
     },
   },
   typography: {
-    fontFamily: 'Poppins, Arial, sans-serif', // Modern font family
+    fontFamily: 'Circular, Arial, sans-serif', // Spotify's modern font family
     h1: {
-      fontSize: '3rem',
-      fontWeight: 600,
-      color: '#212121',
+      fontSize: '2.5rem',
+      fontWeight: 700,
+      color: '#FFFFFF',
     },
     h2: {
-      fontSize: '2.5rem',
-      fontWeight: 500,
-      color: '#212121',
+      fontSize: '2rem',
+      fontWeight: 600,
+      color: '#FFFFFF',
     },
     h3: {
-      fontSize: '2rem',
-      fontWeight: 400,
-      color: '#212121',
+      fontSize: '1.75rem',
+      fontWeight: 500,
+      color: '#FFFFFF',
     },
     h4: {
       fontSize: '1.5rem',
-      fontWeight: 400,
-      color: '#212121',
+      fontWeight: 500,
+      color: '#FFFFFF',
     },
     body1: {
       fontSize: '1rem',
       fontWeight: 400,
-      color: '#212121',
+      color: '#B3B3B3',
+    },
+    button: {
+      fontWeight: 600,
+      textTransform: 'uppercase',
     },
   },
   components: {
@@ -54,7 +58,7 @@ const theme = createTheme({
           padding: '10px 20px',
           textTransform: 'none',
           '&:hover': {
-            backgroundColor: '#FF4081', // Hover color
+            backgroundColor: '#1ED760', // Hover color
           },
         },
       },
@@ -67,7 +71,7 @@ const theme = createTheme({
           transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
           '&:hover': {
             transform: 'scale(1.05)',
-            boxShadow: '0 16px 32px rgba(0, 0, 0, 0.15)',
+            boxShadow: '0 16px 32px rgba(0, 0, 0, 0.2)',
           },
         },
       },
@@ -76,6 +80,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          backgroundColor: '#181818', // Dark app bar background
         },
       },
     },

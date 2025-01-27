@@ -7,6 +7,7 @@ import SongList from './components/SongList';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import OrderSummary from './components/OrderSummary';
+import SongDetails from './components/SongDetails'; 
 import Box from '@mui/material/Box';
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/orderSummary" element={<OrderSummary />} />
+            <Route path="/song/:id" element={<SongDetails />} /> {/* Add this route */}
           </Routes>
         </Box>
 

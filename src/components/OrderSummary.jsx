@@ -1,24 +1,31 @@
-import { useSelector } from 'react-redux';
-import { Box, Typography, Grid, Card, CardContent, Divider, Button, Container } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Box, Typography, Grid, Card, CardContent, Divider, Button, Container, IconButton, Tooltip } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 
 const OrderSummary = () => {
-  const cartItems = useSelector((state) => state.cart.cart);
- 
-
-  // Calculate the original price based on item quantity
-  const originalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
-  // Apply 100% discount
-  const discount = originalPrice;  // 100% discount
-  const discountedTotal = originalPrice - discount; // Total becomes 0 after applying 100% discount
-
+  const [orderDetails, setOrderDetails] = useState([]);
   const navigate = useNavigate(); // Initialize useNavigate
 
-  // Function to navigate to the home page
+  useEffect(() => {
+    // Retrieve the cart details from local storage
+    const storedOrderDetails = localStorage.getItem('orderDetails');
+    if (storedOrderDetails) {
+      setOrderDetails(JSON.parse(storedOrderDetails));
+    }
+  }, []);
+
   const handleContinueShopping = () => {
     navigate('/'); // Navigate to the home page (index page)
   };
+
+  const handleBackToCheckout = () => {
+    navigate('/checkout');
+  };
+
+  const originalPrice = orderDetails.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const discount = originalPrice;
+  const discountedTotal = originalPrice - discount; // 100% discount
 
   return (
     <Box
@@ -29,17 +36,35 @@ const OrderSummary = () => {
         justifyContent: 'center',
         minHeight: '100vh',
         padding: 4,
-        // Light background color for clean look
+        background: '#121212', // Dark background color
+        color: '#fff', // White text color
       }}
     >
+      {/* Back Button */}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 2, width: '100%' }}>
+        <Tooltip title="Back to Checkout">
+          <IconButton
+            color="primary"
+            onClick={handleBackToCheckout}
+            sx={{
+              color: '#1DB954', 
+              '&:hover': { backgroundColor: '#1ED760' },
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+
       <Typography
         variant="h3"
         gutterBottom
         sx={{
           fontWeight: 'bold',
-          color: '#2d2d2d',
+          color: '#1DB954',
           textAlign: 'center',
-          fontFamily: 'Poppins, sans-serif',
+          fontFamily: 'Circular, sans-serif',
+          fontSize: { xs: '2rem', md: '2.5rem' }, // Responsive font size
         }}
       >
         Order Summary
@@ -47,30 +72,31 @@ const OrderSummary = () => {
       <Typography
         variant="h5"
         sx={{
-          color: '#555',
+          color: '#ccc',
           marginBottom: 3,
           textAlign: 'center',
+          fontSize: { xs: '1.25rem', md: '1.5rem' }, // Responsive font size
         }}
       >
         Thank you for your purchase! Your order has been successfully processed.
       </Typography>
 
-      <Container maxWidth="sm" sx={{ backgroundColor: 'white', padding: 4, borderRadius: 3, boxShadow: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00b8d4', marginBottom: 2 }}>
+      <Container maxWidth="sm" sx={{ backgroundColor: '#181818', padding: 4, borderRadius: 3, boxShadow: 2 }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1DB954', marginBottom: 2 }}>
           Order Details
         </Typography>
 
         {/* Cart Item List */}
         <Grid container spacing={2}>
-          {cartItems.map((item) => (
+          {orderDetails.map((item) => (
             <Grid item xs={12} key={item.id}>
-              <Card sx={{ borderRadius: 3, boxShadow: 1 }}>
+              <Card sx={{ borderRadius: 3, boxShadow: 1, backgroundColor: '#222' }}>
                 <CardContent>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body1" sx={{ fontWeight: '500' }}>
+                    <Typography variant="body1" sx={{ fontWeight: '500', color: '#fff' }}>
                       {item.title} x {item.quantity}
                     </Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#00b8d4' }}>
+                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1DB954' }}>
                       ${(item.price * item.quantity).toFixed(2)}
                     </Typography>
                   </Box>
@@ -82,7 +108,7 @@ const OrderSummary = () => {
 
         {/* Price Breakdown */}
         <Box sx={{ marginTop: 3 }}>
-          <Divider sx={{ marginBottom: 2 }} />
+          <Divider sx={{ marginBottom: 2, backgroundColor: '#444' }} />
           <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
             <Typography variant="body1" sx={{ fontWeight: '600' }}>Original Price:</Typography>
             <Typography variant="body1">${originalPrice.toFixed(2)}</Typography>
@@ -93,16 +119,16 @@ const OrderSummary = () => {
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
             <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Total After Discount:</Typography>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#2e7d32' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1DB954' }}>
               ${discountedTotal.toFixed(2)}
             </Typography>
           </Box>
-          <Divider sx={{ marginTop: 2 }} />
+          <Divider sx={{ marginTop: 2, backgroundColor: '#444' }} />
         </Box>
 
         {/* Thank You Message */}
         <Box sx={{ marginTop: 4, textAlign: 'center' }}>
-          <Typography variant="body1" sx={{ color: '#555' }}>
+          <Typography variant="body1" sx={{ color: '#ccc' }}>
             Enjoy free listening to your purchased items!
           </Typography>
         </Box>

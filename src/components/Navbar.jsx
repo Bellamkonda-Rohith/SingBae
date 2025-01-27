@@ -1,5 +1,6 @@
-import { AppBar, Box, Toolbar, IconButton, Badge } from '@mui/material';
+import { AppBar, Box, Toolbar, IconButton, Badge, Button } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import HomeIcon from '@mui/icons-material/Home';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import theme from '../theme/theme';
@@ -17,9 +18,13 @@ export const Navbar = () => {
     navigate('/'); // Navigate to the home page when logo is clicked
   };
 
+  const handleHomeClick = () => {
+    navigate('/'); // Navigate to the home page when home icon is clicked
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ backgroundColor: "black", zIndex: 1300, color: "white" }}>
+      <AppBar position="fixed" sx={{ backgroundColor: "#1DB954", zIndex: 1300, color: "white" }}>
         <Toolbar>
           <Box
             component="img"
@@ -28,9 +33,22 @@ export const Navbar = () => {
             sx={{
               height: 60,
               cursor: 'pointer',
+              marginRight: { xs: 1, md: 2 },
             }}
             onClick={handleLogoClick}
           />
+          <Button
+            color="inherit"
+            startIcon={<HomeIcon />}
+            onClick={handleHomeClick}
+            sx={{
+              textTransform: 'none',
+              fontSize: { xs: '1rem', md: '1.25rem' }, // Responsive font size
+            }}
+          >
+            Home
+          </Button>
+          <Box sx={{ flexGrow: 1 }} />
           <IconButton
             size="large"
             edge="end"
@@ -38,7 +56,6 @@ export const Navbar = () => {
             aria-label="cart"
             onClick={handleCartClick}
             sx={{
-              marginLeft: 'auto', // Push the cart icon to the right
               '&:hover': { backgroundColor: theme.palette.primary.dark },
             }}
           >
