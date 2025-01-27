@@ -43,7 +43,9 @@ const SongList = () => {
           <Grid item xs={12} sm={6} md={4} lg={3} key={song.id}>
             <Card
               sx={{
-                position: 'relative', // Ensures the cart icon positions correctly
+                position: 'relative',
+                width: '100%', // Ensures the card takes full width within the grid item
+                height: '100%', // Ensures the card takes full height within the grid item
                 borderRadius: '16px',
                 boxShadow: 4,
                 transition: 'transform 0.3s ease',
