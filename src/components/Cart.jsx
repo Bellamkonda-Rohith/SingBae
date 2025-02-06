@@ -30,7 +30,7 @@ const Cart = () => {
           <IconButton
             component={motion.button}
             whileHover={{ scale: 1.1 }}
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/SongList')}
             sx={{ color: '#1DB954' }}
           >
             <ArrowBackIcon />

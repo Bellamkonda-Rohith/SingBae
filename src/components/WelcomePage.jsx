@@ -42,7 +42,7 @@ const WelcomePage = () => {
           }}/>
         </motion.div>
 
-        <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
+        <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, md: 4 } }}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -50,12 +50,13 @@ const WelcomePage = () => {
           >
             <Typography variant="h1" sx={{
               fontWeight: 900,
-              fontSize: { xs: '3rem', sm: '4rem', md: '6rem' },
+              fontSize: { xs: '2.5rem', sm: '4rem', md: '6rem' },
               textAlign: 'center',
               background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 100%)`,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              mb: 2,
+              mb: { xs: 1, md: 2 },
+              lineHeight: 1.2,
             }}>
               Feel The Music
             </Typography>
@@ -66,13 +67,15 @@ const WelcomePage = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 1 }}
           >
-            <Typography variant="h5" sx={{
+            <Typography variant="h6" component="div" sx={{
               textAlign: 'center',
               color: 'text.secondary',
               maxWidth: '800px',
               mx: 'auto',
-              mb: 4,
+              mb: { xs: 3, md: 4 },
               px: 2,
+              fontSize: { xs: '1rem', sm: '1.25rem' },
+              lineHeight: 1.5,
             }}>
               Immerse yourself in crystal-clear sound quality and discover millions of tracks from artists worldwide.
             </Typography>
@@ -90,12 +93,14 @@ const WelcomePage = () => {
               variant="contained"
               size="large"
               endIcon={<ArrowDownward />}
+              fullWidth={{ xs: true, sm: false }}
               sx={{
-                px: 6,
-                py: 2,
-                fontSize: '1.2rem',
+                px: { xs: 4, md: 6 },
+                py: 1.5,
+                fontSize: { xs: '1rem', md: '1.2rem' },
                 borderRadius: '50px',
                 textTransform: 'none',
+                maxWidth: 300,
                 transition: 'all 0.3s ease',
                 '&:hover': {
                   transform: 'translateY(-3px)',
@@ -110,10 +115,10 @@ const WelcomePage = () => {
       </Box>
 
       {/* Features Section */}
-      <Container maxWidth="lg" sx={{ py: 10 }}>
-        <Grid container spacing={6} justifyContent="center">
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, md: 4 } }}>
+        <Grid container spacing={{ xs: 3, md: 6 }} justifyContent="center">
           {features.map((feature, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid item xs={12} sm={10} md={4} key={index}>
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -121,7 +126,7 @@ const WelcomePage = () => {
                 transition={{ delay: index * 0.2 }}
               >
                 <Box sx={{
-                  p: 4,
+                  p: { xs: 2, md: 4 },
                   borderRadius: 4,
                   textAlign: 'center',
                   bgcolor: 'background.paper',
@@ -133,23 +138,23 @@ const WelcomePage = () => {
                   }
                 }}>
                   <Box sx={{
-                    width: 80,
-                    height: 80,
+                    width: { xs: 60, md: 80 },
+                    height: { xs: 60, md: 80 },
                     borderRadius: '50%',
                     bgcolor: 'primary.main',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     mx: 'auto',
-                    mb: 3,
+                    mb: 2,
                     color: '#fff',
                   }}>
                     {feature.icon}
                   </Box>
-                  <Typography variant="h5" gutterBottom sx={{ fontWeight: 700 }}>
+                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 700 }}>
                     {feature.title}
                   </Typography>
-                  <Typography variant="body1" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.875rem', md: '1rem' } }}>
                     {feature.text}
                   </Typography>
                 </Box>
@@ -160,15 +165,15 @@ const WelcomePage = () => {
       </Container>
 
       {/* Animated Preview Section */}
-      <Box sx={{ py: 10, bgcolor: 'background.paper' }}>
-        <Container maxWidth="xl">
+      <Box sx={{ py: { xs: 6, md: 10 }, bgcolor: 'background.paper' }}>
+        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
             <Grid container spacing={4} alignItems="center">
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={6} order={{ xs: 2, md: 1 }}>
                 <motion.div
                   animate={{
                     y: [0, -20, 0],
@@ -181,7 +186,7 @@ const WelcomePage = () => {
                 >
                   <Box
                     component="img"
-                    src="https://i.ytimg.com/vi/yffv9AMiM4c/maxresdefault.jpg" // Replace with your image
+                    src="https://i.ytimg.com/vi/yffv9AMiM4c/maxresdefault.jpg"
                     sx={{
                       width: '100%',
                       height: 'auto',
@@ -191,15 +196,19 @@ const WelcomePage = () => {
                   />
                 </motion.div>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Typography variant="h2" sx={{ 
+              <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+                <Typography variant="h3" sx={{ 
                   fontWeight: 800,
-                  mb: 3,
-                  fontSize: { xs: '2.5rem', md: '3.5rem' }
+                  mb: 2,
+                  fontSize: { xs: '2rem', md: '3.5rem' },
+                  lineHeight: 1.2
                 }}>
                   Experience Music Like Never Before
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                <Typography variant="body1" color="text.secondary" sx={{ 
+                  mb: 3,
+                  fontSize: { xs: '0.875rem', md: '1rem' }
+                }}>
                   Our advanced audio technology delivers studio-quality sound straight to your ears. 
                   Discover new dimensions in your favorite tracks with spatial audio.
                 </Typography>
@@ -207,12 +216,14 @@ const WelcomePage = () => {
                   variant="outlined"
                   size="large"
                   onClick={() => navigate('/SongList')}
+                  fullWidth={{ xs: true, md: false }}
                   sx={{
-                    px: 6,
+                    px: { xs: 4, md: 6 },
                     borderRadius: '50px',
-                    fontSize: '1.1rem',
+                    fontSize: { xs: '1rem', md: '1.1rem' },
                     textTransform: 'none',
                     borderWidth: 2,
+                    maxWidth: { md: 300 },
                     '&:hover': {
                       borderWidth: 2,
                       bgcolor: 'primary.main',
@@ -229,9 +240,9 @@ const WelcomePage = () => {
       </Box>
 
       {/* Footer */}
-      <Box sx={{ py: 6, bgcolor: 'background.default' }}>
+      <Box sx={{ py: { xs: 4, md: 6 }, bgcolor: 'background.default' }}>
         <Container maxWidth="lg">
-          <Typography textAlign="center" color="text.secondary">
+          <Typography variant="body2" textAlign="center" color="text.secondary">
             © 2024 Music App. All rights reserved.
           </Typography>
         </Container>
