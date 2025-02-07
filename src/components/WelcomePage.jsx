@@ -239,14 +239,7 @@ const WelcomePage = () => {
         </Container>
       </Box>
 
-      {/* Footer */}
-      <Box sx={{ py: { xs: 4, md: 6 }, bgcolor: 'background.default' }}>
-        <Container maxWidth="lg">
-          <Typography variant="body2" textAlign="center" color="text.secondary">
-            © 2024 Music App. All rights reserved.
-          </Typography>
-        </Container>
-      </Box>
+     
     </Box>
   );
 };
