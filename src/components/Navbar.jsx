@@ -1,15 +1,25 @@
-import { AppBar, Box, Toolbar, IconButton, Badge, Button, InputBase, useMediaQuery } from '@mui/material';
+import { AppBar, Box, Toolbar, IconButton, Badge, Button, InputBase, useMediaQuery, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import HomeIcon from '@mui/icons-material/Home';
-import SearchIcon from '@mui/icons-material/Search';
+import { ShoppingCart, Home, Search, LibraryMusic } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import theme from '../theme/theme';
-import logo from '../assets/sangBaeicon.svg';
 
 // Styled Components
+const SearchContainer = styled(motion.div)(({ theme }) => ({
+  position: 'relative',
+  borderRadius: 30,
+  backgroundColor: alpha(theme.palette.common.white, 0.1),
+  marginLeft: theme.spacing(2),
+  width: '100%',
+  maxWidth: 500,
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.2),
+  },
+}));
+
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: '100%',
@@ -22,41 +32,19 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
+  width: '100%',
   '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: theme.spacing(1.8, 1, 1.8, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
+    fontSize: 14,
+    fontWeight: 500,
   },
 }));
 
-// Animated Components
-const AnimatedBadge = motion(Badge);
-const FloatingButton = motion(IconButton);
-
-const Search = styled(motion.div)(({ theme }) => ({
-  position: 'relative',
-  borderRadius: '30px',
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  marginLeft: theme.spacing(2),
-  width: '40%',
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-    transform: 'scale(1.02)'
-  },
-}));
-
-const GlowingAppBar = styled(AppBar)({
-  background: `linear-gradient(135deg, 
-    ${alpha(theme.palette.primary.main, 0.9)} 0%, 
-    ${alpha(theme.palette.secondary.main, 0.9)} 100%)`,
+const MusicAppBar = styled(AppBar)({
+  backgroundColor: '#000000',
   backdropFilter: 'blur(12px)',
-  boxShadow: '0 8px 32px rgba(31, 38, 135, 0.37)',
-  border: '1px solid rgba(255, 255, 255, 0.18)',
+  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
 });
 
 const Navbar = () => {
@@ -64,174 +52,118 @@ const Navbar = () => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const handleCartClick = () => navigate('/cart');
-  const handleLogoClick = () => navigate('/');
-
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <GlowingAppBar position="fixed" sx={{ zIndex: 1300 }}>
-        <Toolbar sx={{ minHeight: { xs: 56, sm: 64 }, py: 1 }}>
-          <motion.div
-            whileHover={{ rotate: [0, -10, 10, 0] }}
-            transition={{ duration: 0.5 }}
-            style={{ display: 'flex', alignItems: 'center' }}
+      <MusicAppBar position="fixed">
+        <Toolbar sx={{ minHeight: 64, gap: 2 }}>
+          {/* Brand Section */}
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+            onClick={() => navigate('/')}
           >
-            <Box
-              component="img"
-              src={logo}
-              alt="SingBae Logo"
-              sx={{
-                height: { xs: 40, sm: 50 },
-                cursor: 'pointer',
-                mr: 2,
-                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))'
-              }}
-              onClick={handleLogoClick}
-            />
+            <LibraryMusic sx={{ 
+              fontSize: 32, 
+              color: '#1DB954', 
+              mr: 1 
+            }} />
+            <Typography variant="h6" sx={{
+              fontWeight: 800,
+              background: 'linear-gradient(45deg, #1DB954 30%, #1ED760 90%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              letterSpacing: '-0.5px'
+            }}>
+              SingBae
+            </Typography>
           </motion.div>
 
-          <motion.div whileHover={{ scale: 1.05 }}>
-  <Button
-    color="inherit"
-    startIcon={
-      <motion.div 
-        whileHover={{ scale: 1.1 }}
-        style={{ 
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: '2px' // Adjust this value for perfect alignment
-        }}
-      >
-        <HomeIcon sx={{ fontSize: 'inherit' }} />
-      </motion.div>
-    }
-    onClick={() => navigate('/')}
-    sx={{
-      textTransform: 'none',
-      fontSize: { xs: '0.875rem', sm: '1rem' },
-      fontWeight: 600,
-      letterSpacing: '0.5px',
-      '&:hover': { 
-        background: 'rgba(255, 255, 255, 0.1)',
-        '&::after': { width: '100%' }
-      },
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      '& .MuiButton-startIcon': {
-        margin: 0 // Remove default margin
-      },
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        width: '0%',
-        height: '2px',
-        background: 'white',
-        transition: 'width 0.3s ease'
-      }
-    }}
-  >
-    {!isMobile && 'Home'}
-  </Button>
-</motion.div>
+          {/* Home Button */}
+          {!isMobile && (
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Button
+                color="inherit"
+                startIcon={<Home sx={{ color: '#1DB954' }} />}
+                onClick={() => navigate('/')}
+                sx={{
+                  textTransform: 'none',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: '#fff',
+                  '&:hover': { 
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                  }
+                }}
+              >
+                Home
+              </Button>
+            </motion.div>
+          )}
 
-          <Search
-            initial={{ width: isMobile ? '100px' : '300px' }}
-            whileFocus={{ width: '400px' }}
-            transition={{ type: 'spring', stiffness: 100 }}
+          {/* Search Bar */}
+          <SearchContainer
+            initial={{ width: isMobile ? 40 : 240 }}
+            whileFocus={{ width: 320 }}
+            transition={{ type: 'spring', stiffness: 200 }}
           >
             <SearchIconWrapper>
-              <SearchIcon sx={{ color: 'white' }} />
+              <Search sx={{ color: '#b3b3b3', fontSize: 20 }} />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Search songs, artists..."
               inputProps={{ 'aria-label': 'search' }}
-              sx={{
-                color: 'white',
-                '&::placeholder': { color: 'rgba(255,255,255,0.8)' }
-              }}
+              sx={{ color: '#fff' }}
             />
-          </Search>
+          </SearchContainer>
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <FloatingButton
-            size={isMobile ? 'medium' : 'large'}
-            onClick={handleCartClick}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            sx={{
-              color: 'white',
-              position: 'relative',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)',
-                opacity: 0,
-                transition: 'opacity 0.3s ease'
-              },
-              '&:hover::before': {
-                opacity: 1
-              }
-            }}
+          {/* Cart Button */}
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <AnimatedBadge 
-              badgeContent={totalItems} 
-              color="error"
-              overlap="circular"
-              animate={{
-                scale: [1, 1.2, 1],
-                transition: { duration: 0.3 }
-              }}
-              key={totalItems}
+            <IconButton
+              color="inherit"
+              onClick={() => navigate('/cart')}
               sx={{
-                '& .MuiBadge-badge': {
-                  right: -4,
-                  top: 8,
-                  fontWeight: 'bold',
-                  fontSize: theme.typography.pxToRem(12),
-                  background: 'linear-gradient(45deg, #ff1744 0%, #ff4081 100%)',
-                  boxShadow: '0 4px 8px rgba(255,23,68,0.3)'
+                position: 'relative',
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)'
                 }
               }}
             >
-              <motion.div
-                animate={{
-                  rotate: [0, 10, -10, 0],
-                  transition: { duration: 1.5, repeat: Infinity }
+              <Badge 
+                badgeContent={totalItems} 
+                overlap="circular"
+                sx={{
+                  '& .MuiBadge-badge': {
+                    right: -4,
+                    top: 12,
+                    fontWeight: 'bold',
+                    fontSize: 10,
+                    backgroundColor: '#1DB954',
+                    color: '#000'
+                  }
                 }}
               >
-                <ShoppingCartIcon fontSize={isMobile ? 'medium' : 'large'} />
-              </motion.div>
-            </AnimatedBadge>
-          </FloatingButton>
+                <motion.div
+                  animate={{
+                    rotate: [0, 10, -10, 0],
+                    transition: { duration: 1.5, repeat: Infinity }
+                  }}
+                >
+                  <ShoppingCart sx={{ 
+                    fontSize: 28, 
+                    color: '#fff' 
+                  }} />
+                </motion.div>
+              </Badge>
+            </IconButton>
+          </motion.div>
         </Toolbar>
-
-        {/* Animated Border Bottom */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 1, repeat: Infinity, repeatType: 'mirror' }}
-          style={{
-            height: '2px',
-            background: 'linear-gradient(90deg, transparent, #fff, transparent)',
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            originX: 0
-          }}
-        />
-      </GlowingAppBar>
-      <Box sx={{ height: { xs: 56, sm: 64 } }} />
+      </MusicAppBar>
+      <Box sx={{ height: 64 }} />
     </Box>
   );
 };

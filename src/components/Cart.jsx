@@ -9,7 +9,8 @@ import {
   Grid,
   Paper,
   Container,
-  Tooltip
+  Divider,
+  Stack
 } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
@@ -23,133 +24,276 @@ const Cart = () => {
   const total = useSelector((state) => state.cart.total);
 
   return (
-    <Container sx={{ padding: { xs: 2, md: 4 }, background: '#121212', minHeight: '100vh', color: '#fff' }}>
-      {/* Back Button */}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 2 }}>
-        <Tooltip title="Back to Home">
-          <IconButton
-            component={motion.button}
-            whileHover={{ scale: 1.1 }}
-            onClick={() => navigate('/SongList')}
-            sx={{ color: '#1DB954' }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        </Tooltip>
+    <Container maxWidth="xl" sx={{ 
+      p: { xs: 2, md: 4 }, 
+      background: '#121212', 
+      minHeight: '100vh', 
+      color: '#fff',
+      position: 'relative'
+    }}>
+      {/* Header Section */}
+      <Box sx={{ mb: 4 }}>
+        <Button
+          component={motion.button}
+          whileHover={{ scale: 1.05 }}
+          startIcon={<ArrowBackIcon />}
+          onClick={() => navigate(-1)}
+          sx={{
+            color: '#fff',
+            textTransform: 'none',
+            fontSize: '1rem',
+            '&:hover': {
+              color: '#1DB954',
+              bgcolor: 'rgba(255,255,255,0.1)'
+            }
+          }}
+        >
+          Back
+        </Button>
+        <Typography
+          variant="h2"
+          sx={{
+            mt: 2,
+            fontWeight: 900,
+            fontSize: { xs: '2rem', md: '3rem' },
+            color: '#fff',
+            letterSpacing: '-0.04em'
+          }}
+        >
+          Your Collection
+        </Typography>
       </Box>
-
-      <Typography
-        component={motion.h4}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        variant="h4"
-        gutterBottom
-        sx={{ fontWeight: 'bold', textAlign: 'center', color: '#1DB954', marginBottom: 4 }}
-      >
-        Shopping Cart
-      </Typography>
 
       {cartItems.length === 0 ? (
-        <Typography variant="h6" sx={{ textAlign: 'center', color: '#666', marginBottom: 3 }}>
-          Your cart is empty.
-        </Typography>
-      ) : (
-        <Paper component={motion.div} initial={{ opacity: 0 }} animate={{ opacity: 1 }} sx={{ padding: 3, borderRadius: 2, backgroundColor: '#181818' }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 3, color: '#fff' }}>
-            Cart Items
+        <Box sx={{ 
+          height: '60vh', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          textAlign: 'center'
+        }}>
+          <Typography variant="h5" sx={{ color: '#b3b3b3', mb: 2 }}>
+            Your collection is empty
           </Typography>
-
-          {cartItems.map((item) => (
-            <Grid container key={item.id} spacing={2} sx={{ alignItems: 'center', paddingY: 2, borderBottom: '1px solid #444' }}>
-              <Grid item xs={6} sm={4}>
-                <Typography>{item.title}</Typography>
-              </Grid>
-              <Grid item xs={4} sm={2}>
-                <Typography>${item.price.toFixed(2)}</Typography>
-              </Grid>
-              <Grid item xs={6} sm={3} sx={{ display: 'flex', alignItems: 'center' }}>
-                <IconButton onClick={() => dispatch(decrementQuantity(item.id))} disabled={item.quantity === 1} sx={{ color: '#1DB954' }}>
-                  <RemoveIcon fontSize="small" />
-                </IconButton>
-                <Typography sx={{ marginX: 1, fontWeight: 'bold' }}>{item.quantity}</Typography>
-                <IconButton onClick={() => dispatch(incrementQuantity(item.id))} sx={{ color: '#1DB954' }}>
-                  <AddIcon fontSize="small" />
-                </IconButton>
-              </Grid>
-              <Grid item xs={4} sm={2}>
-                <Typography>${(item.price * item.quantity).toFixed(2)}</Typography>
-              </Grid>
-              <Grid item xs={2} sm={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Button
-                  component={motion.button}
-                  whileHover={{ scale: 1.1 }}
-                  onClick={() => dispatch(removeFromCart(item.id))}
-                  color="error"
-                  size="small"
-                >
-                  Remove
-                </Button>
+          <Button
+            component={motion.button}
+            whileHover={{ scale: 1.05 }}
+            variant="contained"
+            sx={{
+              bgcolor: '#1DB954',
+              color: '#fff',
+              borderRadius: 3,
+              px: 4,
+              py: 1.5,
+              fontSize: '1rem',
+              textTransform: 'none',
+              '&:hover': { bgcolor: '#1ED760' }
+            }}
+            onClick={() => navigate('/SongList')}
+          >
+            Explore Music
+          </Button>
+        </Box>
+      ) : (
+        <>
+          {/* Cart Items Section */}
+          <Paper 
+            component={motion.div}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            sx={{ 
+              p: 3, 
+              borderRadius: 2, 
+              bgcolor: '#181818',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+            }}
+          >
+            <Grid container spacing={2} sx={{ mb: 2 }}>
+              <Grid item xs={12}>
+                <Typography variant="h6" sx={{ 
+                  fontWeight: 700, 
+                  color: '#fff',
+                  fontSize: '1.5rem'
+                }}>
+                  {cartItems.length} {cartItems.length > 1 ? 'Items' : 'Item'}
+                </Typography>
               </Grid>
             </Grid>
-          ))}
-        </Paper>
+
+            {cartItems.map((item) => (
+              <Box key={item.id}>
+                <Grid container spacing={2} sx={{ 
+                  alignItems: 'center', 
+                  py: 2,
+                  '&:hover': {
+                    bgcolor: 'rgba(255,255,255,0.05)'
+                  }
+                }}>
+                  {/* Song Info */}
+                  <Grid item xs={12} md={6}>
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <Box
+                        component="img"
+                        src={item.coverUrl}
+                        alt={item.title}
+                        sx={{
+                          width: 60,
+                          height: 60,
+                          borderRadius: 1,
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                        }}
+                      />
+                      <Box>
+                        <Typography variant="body1" sx={{ 
+                          fontWeight: 500, 
+                          color: '#fff'
+                        }}>
+                          {item.title}
+                        </Typography>
+                        <Typography variant="body2" sx={{ 
+                          color: '#b3b3b3',
+                          fontSize: '0.875rem'
+                        }}>
+                          {item.artist}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </Grid>
+
+                  {/* Price and Quantity Controls */}
+                  <Grid item xs={6} md={3}>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <IconButton 
+                        onClick={() => dispatch(decrementQuantity(item.id))} 
+                        disabled={item.quantity === 1}
+                        sx={{ 
+                          color: '#fff',
+                          '&:hover': {
+                            bgcolor: 'rgba(255,255,255,0.1)'
+                          }
+                        }}
+                      >
+                        <RemoveIcon fontSize="small" />
+                      </IconButton>
+                      <Typography sx={{ 
+                        minWidth: 30, 
+                        textAlign: 'center',
+                        fontWeight: 500
+                      }}>
+                        {item.quantity}
+                      </Typography>
+                      <IconButton 
+                        onClick={() => dispatch(incrementQuantity(item.id))}
+                        sx={{ 
+                          color: '#fff',
+                          '&:hover': {
+                            bgcolor: 'rgba(255,255,255,0.1)'
+                          }
+                        }}
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
+                    </Stack>
+                  </Grid>
+
+                  {/* Total Price and Remove Button */}
+                  <Grid item xs={6} md={3}>
+                    <Stack direction="row" alignItems="center" justifyContent="space-between">
+                      <Typography variant="body1" sx={{ 
+                        fontWeight: 500,
+                        color: '#1DB954'
+                      }}>
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </Typography>
+                      <Button
+                        component={motion.button}
+                        whileHover={{ scale: 1.05 }}
+                        onClick={() => dispatch(removeFromCart(item.id))}
+                        sx={{
+                          color: '#b3b3b3',
+                          textTransform: 'none',
+                          '&:hover': {
+                            color: '#ff4d4d'
+                          }
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    </Stack>
+                  </Grid>
+                </Grid>
+                <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)' }} />
+              </Box>
+            ))}
+          </Paper>
+
+          {/* Total and Actions Section */}
+          <Box sx={{ 
+            mt: 4,
+            p: 3,
+            borderRadius: 2,
+            bgcolor: '#181818',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+          }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <Typography variant="h5" sx={{ 
+                    fontWeight: 700,
+                    color: '#fff'
+                  }}>
+                    Total:
+                  </Typography>
+                  <Typography variant="h4" sx={{ 
+                    fontWeight: 900,
+                    color: '#1DB954'
+                  }}>
+                    ${total.toFixed(2)}
+                  </Typography>
+                </Stack>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="flex-end">
+                  <Button
+                    component={motion.button}
+                    whileHover={{ scale: 1.05 }}
+                    variant="outlined"
+                    onClick={() => dispatch(resetCart())}
+                    sx={{
+                      color: '#b3b3b3',
+                      borderColor: '#b3b3b3',
+                      textTransform: 'none',
+                      '&:hover': {
+                        borderColor: '#ff4d4d',
+                        color: '#ff4d4d'
+                      }
+                    }}
+                  >
+                    Clear Collection
+                  </Button>
+                  <Button
+                    component={motion.button}
+                    whileHover={{ scale: 1.05 }}
+                    variant="contained"
+                    sx={{
+                      bgcolor: '#1DB954',
+                      color: '#fff',
+                      textTransform: 'none',
+                      '&:hover': {
+                        bgcolor: '#1ED760'
+                      }
+                    }}
+                    onClick={() => navigate('/checkout')}
+                  >
+                    Continue to Payment
+                  </Button>
+                </Stack>
+              </Grid>
+            </Grid>
+          </Box>
+        </>
       )}
-
-      <Box sx={{ marginTop: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: { xs: 'column', md: 'row' } }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1DB954' }}>Order Summary</Typography>
-        <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#1DB954' }}>Total: ${total.toFixed(2)}</Typography>
-      </Box>
-      <Box
-  sx={{
-    marginTop: 3,
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: { xs: 'column', md: 'row' },
-    alignItems: 'center',
-    gap: { xs: 2, md: 0 }, // Adds spacing between buttons on mobile
-  }}
->
-  <Button
-    component={motion.button}
-    whileHover={{ scale: 1.05 }}
-    variant="outlined"
-    color="error"
-    onClick={() => dispatch(resetCart())}
-    sx={{
-      width: { xs: '100%', md: 'auto' }, // Full width on mobile
-      marginBottom: { xs: 2, md: 0 }, // Space between buttons on mobile
-    }}
-  >
-    Clear Cart
-  </Button>
-  <Button
-    component={motion.button}
-    whileHover={{ scale: 1.05 }}
-    variant="contained"
-    color="primary"
-    onClick={() => navigate('/checkout')}
-    sx={{
-      width: { xs: '100%', md: 'auto' },
-      marginBottom: { xs: 2, md: 0 },
-    }}
-  >
-    Proceed to Checkout
-  </Button>
-  <Button
-    component={motion.button}
-    whileHover={{ scale: 1.05 }}
-    variant="contained"
-    sx={{
-      backgroundColor: '#1DB954',
-      width: { xs: '100%', md: 'auto' },
-    }}
-    onClick={() => navigate('/SongList')}
-  >
-    Add More Items
-  </Button>
-</Box>
-
     </Container>
   );
 };

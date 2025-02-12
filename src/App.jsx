@@ -10,6 +10,7 @@ import OrderSummary from './components/OrderSummary';
 import SongDetails from './components/SongDetails'; 
 import Box from '@mui/material/Box';
 import WelcomePage from './components/WelcomePage';
+import Library from './components/Library';
 
 const App = () => {
   return (
@@ -29,6 +30,8 @@ const App = () => {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/orderSummary" element={<OrderSummary />} />
             <Route path="/song/:id" element={<SongDetails />} /> {/* Add this route */}
+            <Route path="/Library" element={<Library />} /> {/* Add this route */}
+
           </Routes>
         </Box>
 

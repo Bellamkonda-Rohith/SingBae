@@ -1,12 +1,12 @@
-import { Box, Grid, Typography, Button, Container, useTheme } from '@mui/material';
+import { Box, Grid, Typography, Button, Container } from '@mui/material';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import {  useRef } from 'react';
-import { ArrowDownward, MusicNote, LibraryMusic, Headphones } from '@mui/icons-material';
+import { useRef } from 'react';
+import { ArrowForward, LibraryMusic, Headphones, Equalizer } from '@mui/icons-material';
 
 const WelcomePage = () => {
   const navigate = useNavigate();
-  const theme = useTheme();
+  
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -15,14 +15,14 @@ const WelcomePage = () => {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   const features = [
-    { icon: <MusicNote fontSize="large" />, title: "Premium Quality", text: "Lossless audio streaming" },
-    { icon: <LibraryMusic fontSize="large" />, title: "Huge Library", text: "Millions of tracks available" },
-    { icon: <Headphones fontSize="large" />, title: "Any Device", text: "Listen anywhere, anytime" },
+    { icon: <LibraryMusic fontSize="large" />, title: "Curated Playlists", text: "Expert-made collections for every mood" },
+    { icon: <Headphones fontSize="large" />, title: "Hi-Fi Audio", text: "Premium sound quality" },
+    { icon: <Equalizer fontSize="large" />, title: "Smart Recommendations", text: "Discover new favorites daily" },
   ];
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      {/* Parallax Hero Section */}
+    <Box sx={{ minHeight: '100vh', bgcolor: '#121212' }}>
+      {/* Hero Section */}
       <Box sx={{ 
         height: '100vh', 
         position: 'relative', 
@@ -36,7 +36,7 @@ const WelcomePage = () => {
             position: 'absolute',
             width: '200vw',
             height: '200vh',
-            background: `linear-gradient(45deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+            background: `linear-gradient(45deg, #1DB954 0%, #191414 100%)`,
             rotate: '45deg',
             opacity: 0.1,
           }}/>
@@ -52,13 +52,12 @@ const WelcomePage = () => {
               fontWeight: 900,
               fontSize: { xs: '2.5rem', sm: '4rem', md: '6rem' },
               textAlign: 'center',
-              background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 100%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              color: '#fff',
               mb: { xs: 1, md: 2 },
               lineHeight: 1.2,
+              letterSpacing: '-0.04em'
             }}>
-              Feel The Music
+              Music for everyone
             </Typography>
           </motion.div>
 
@@ -69,7 +68,7 @@ const WelcomePage = () => {
           >
             <Typography variant="h6" component="div" sx={{
               textAlign: 'center',
-              color: 'text.secondary',
+              color: '#b3b3b3',
               maxWidth: '800px',
               mx: 'auto',
               mb: { xs: 3, md: 4 },
@@ -77,7 +76,7 @@ const WelcomePage = () => {
               fontSize: { xs: '1rem', sm: '1.25rem' },
               lineHeight: 1.5,
             }}>
-              Immerse yourself in crystal-clear sound quality and discover millions of tracks from artists worldwide.
+              Millions of songs. No credit card needed.
             </Typography>
           </motion.div>
 
@@ -92,7 +91,7 @@ const WelcomePage = () => {
               to="/SongList"
               variant="contained"
               size="large"
-              endIcon={<ArrowDownward />}
+              endIcon={<ArrowForward />}
               fullWidth={{ xs: true, sm: false }}
               sx={{
                 px: { xs: 4, md: 6 },
@@ -101,14 +100,16 @@ const WelcomePage = () => {
                 borderRadius: '50px',
                 textTransform: 'none',
                 maxWidth: 300,
-                transition: 'all 0.3s ease',
+                bgcolor: '#1DB954',
+                color: '#fff',
                 '&:hover': {
-                  transform: 'translateY(-3px)',
-                  boxShadow: `0 10px 20px ${theme.palette.primary.main}40`,
+                  bgcolor: '#1ED760',
+                  transform: 'scale(1.05)',
+                  boxShadow: '0 8px 24px rgba(29, 185, 84, 0.3)',
                 }
               }}
             >
-              Explore Now
+              Get Started
             </Button>
           </motion.div>
         </Container>
@@ -129,19 +130,18 @@ const WelcomePage = () => {
                   p: { xs: 2, md: 4 },
                   borderRadius: 4,
                   textAlign: 'center',
-                  bgcolor: 'background.paper',
-                  boxShadow: theme.shadows[4],
+                  bgcolor: '#181818',
                   transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'translateY(-10px)',
-                    boxShadow: theme.shadows[8],
+                    bgcolor: '#282828'
                   }
                 }}>
                   <Box sx={{
                     width: { xs: 60, md: 80 },
                     height: { xs: 60, md: 80 },
                     borderRadius: '50%',
-                    bgcolor: 'primary.main',
+                    bgcolor: '#1DB954',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -151,10 +151,16 @@ const WelcomePage = () => {
                   }}>
                     {feature.icon}
                   </Box>
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 700 }}>
+                  <Typography variant="h6" gutterBottom sx={{ 
+                    fontWeight: 700,
+                    color: '#fff'
+                  }}>
                     {feature.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.875rem', md: '1rem' } }}>
+                  <Typography variant="body2" sx={{ 
+                    color: '#b3b3b3',
+                    fontSize: { xs: '0.875rem', md: '1rem' } 
+                  }}>
                     {feature.text}
                   </Typography>
                 </Box>
@@ -164,8 +170,8 @@ const WelcomePage = () => {
         </Grid>
       </Container>
 
-      {/* Animated Preview Section */}
-      <Box sx={{ py: { xs: 6, md: 10 }, bgcolor: 'background.paper' }}>
+      {/* Preview Section */}
+      <Box sx={{ py: { xs: 6, md: 10 }, bgcolor: '#181818' }}>
         <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
           <motion.div
             initial={{ opacity: 0 }}
@@ -186,12 +192,12 @@ const WelcomePage = () => {
                 >
                   <Box
                     component="img"
-                    src="https://i.ytimg.com/vi/yffv9AMiM4c/maxresdefault.jpg"
+                    src="https://igimage.indiaglitz.com/telugu/home/bhola_jamjam11072023_3c.jpg"
                     sx={{
                       width: '100%',
                       height: 'auto',
-                      borderRadius: 4,
-                      boxShadow: theme.shadows[10],
+                      borderRadius: 3,
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
                     }}
                   />
                 </motion.div>
@@ -201,19 +207,21 @@ const WelcomePage = () => {
                   fontWeight: 800,
                   mb: 2,
                   fontSize: { xs: '2rem', md: '3.5rem' },
-                  lineHeight: 1.2
+                  lineHeight: 1.2,
+                  color: '#fff'
                 }}>
-                  Experience Music Like Never Before
+                  Premium Sound Experience
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ 
+                <Typography variant="body1" sx={{ 
                   mb: 3,
-                  fontSize: { xs: '0.875rem', md: '1rem' }
+                  fontSize: { xs: '0.875rem', md: '1rem' },
+                  color: '#b3b3b3'
                 }}>
-                  Our advanced audio technology delivers studio-quality sound straight to your ears. 
-                  Discover new dimensions in your favorite tracks with spatial audio.
+                  Enjoy your favorite music in lossless audio quality. 
+                  Available across all your devices.
                 </Typography>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   size="large"
                   onClick={() => navigate('/SongList')}
                   fullWidth={{ xs: true, md: false }}
@@ -222,12 +230,12 @@ const WelcomePage = () => {
                     borderRadius: '50px',
                     fontSize: { xs: '1rem', md: '1.1rem' },
                     textTransform: 'none',
-                    borderWidth: 2,
+                    bgcolor: '#1DB954',
+                    color: '#fff',
                     maxWidth: { md: 300 },
                     '&:hover': {
-                      borderWidth: 2,
-                      bgcolor: 'primary.main',
-                      color: '#fff',
+                      bgcolor: '#1ED760',
+                      transform: 'scale(1.05)'
                     }
                   }}
                 >
@@ -239,7 +247,36 @@ const WelcomePage = () => {
         </Container>
       </Box>
 
-     
+      {/* Footer CTA */}
+      <Box sx={{ py: 6, bgcolor: '#181818', textAlign: 'center' }}>
+        <Container maxWidth="md">
+          <Typography variant="h4" sx={{ 
+            fontWeight: 700,
+            mb: 3,
+            color: '#fff'
+          }}>
+            Ready to join the music revolution?
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => navigate('/SongList')}
+            sx={{
+              px: 6,
+              borderRadius: '50px',
+              fontSize: '1.1rem',
+              textTransform: 'none',
+              bgcolor: '#1DB954',
+              color: '#fff',
+              '&:hover': {
+                bgcolor: '#1ED760'
+              }
+            }}
+          >
+            Get Premium
+          </Button>
+        </Container>
+      </Box>
     </Box>
   );
 };

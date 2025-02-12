@@ -1,160 +1,248 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography, Grid, Card, CardContent, Divider, Button, Container, IconButton, Tooltip } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Box, Typography, Grid, Button, Container, Divider } from '@mui/material';
+import { ArrowBack, LibraryMusic, CheckCircle } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 const OrderSummary = () => {
   const [orderDetails, setOrderDetails] = useState([]);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Retrieve the cart details from local storage
     const storedOrderDetails = localStorage.getItem('orderDetails');
-    if (storedOrderDetails) {
-      setOrderDetails(JSON.parse(storedOrderDetails));
-    }
+    if (storedOrderDetails) setOrderDetails(JSON.parse(storedOrderDetails));
   }, []);
 
-  const handleContinueShopping = () => {
-    navigate('/'); // Navigate to the home page (index page)
-  };
-
-  const handleBackToCheckout = () => {
-    navigate('/checkout');
-  };
-
-  const originalPrice = orderDetails.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const discount = originalPrice;
-  const discountedTotal = originalPrice - discount; // 100% discount
+  const total = orderDetails.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        padding: 4,
-        background: '#121212', // Dark background color
-        color: '#fff', // White text color
-      }}
-    >
-      {/* Back Button */}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 2, width: '100%' }}>
-        <Tooltip title="Back to Checkout">
-          <IconButton
-            color="primary"
-            onClick={handleBackToCheckout}
-            sx={{
-              color: '#1DB954', 
-              '&:hover': { backgroundColor: '#1ED760' },
-            }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        </Tooltip>
-      </Box>
-
-      <Typography
-        variant="h3"
-        gutterBottom
-        sx={{
-          fontWeight: 'bold',
-          color: '#1DB954',
-          textAlign: 'center',
-          fontFamily: 'Circular, sans-serif',
-          fontSize: { xs: '2rem', md: '2.5rem' }, // Responsive font size
-        }}
-      >
-        Order Summary
-      </Typography>
-      <Typography
-        variant="h5"
-        sx={{
-          color: '#ccc',
-          marginBottom: 3,
-          textAlign: 'center',
-          fontSize: { xs: '1.25rem', md: '1.5rem' }, // Responsive font size
-        }}
-      >
-        Thank you for your purchase! Your order has been successfully processed.
-      </Typography>
-
-      <Container maxWidth="sm" sx={{ backgroundColor: '#181818', padding: 4, borderRadius: 3, boxShadow: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1DB954', marginBottom: 2 }}>
-          Order Details
-        </Typography>
-
-        {/* Cart Item List */}
-        <Grid container spacing={2}>
-          {orderDetails.map((item) => (
-            <Grid item xs={12} key={item.id}>
-              <Card sx={{ borderRadius: 3, boxShadow: 1, backgroundColor: '#222' }}>
-                <CardContent>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body1" sx={{ fontWeight: '500', color: '#fff' }}>
-                      {item.title} x {item.quantity}
-                    </Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1DB954' }}>
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </Typography>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* Price Breakdown */}
-        <Box sx={{ marginTop: 3 }}>
-          <Divider sx={{ marginBottom: 2, backgroundColor: '#444' }} />
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
-            <Typography variant="body1" sx={{ fontWeight: '600' }}>Original Price:</Typography>
-            <Typography variant="body1">${originalPrice.toFixed(2)}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
-            <Typography variant="body1" sx={{ fontWeight: '600' }}>Discount Applied:</Typography>
-            <Typography variant="body1" sx={{ color: '#e53935' }}>-${discount.toFixed(2)}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Total After Discount:</Typography>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1DB954' }}>
-              ${discountedTotal.toFixed(2)}
+    <Container maxWidth="xl" sx={{ 
+      p: 0, 
+      minHeight: '100vh', 
+      background: '#121212',
+      color: '#fff'
+    }}>
+      {/* Sticky Header */}
+      <Box sx={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000,
+        backdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(255,255,255,0.1)',
+        py: 3,
+        px: { xs: 2, md: 4 }
+      }}>
+        <Grid container alignItems="center" spacing={2}>
+          <Grid item>
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Button
+                startIcon={<ArrowBack />}
+                onClick={() => navigate(-1)}
+                sx={{
+                  color: '#fff',
+                  textTransform: 'none',
+                  '&:hover': { color: '#1DB954' }
+                }}
+              >
+                Back
+              </Button>
+            </motion.div>
+          </Grid>
+          <Grid item xs>
+            <Typography variant="h1" sx={{
+              fontWeight: 700,
+              fontSize: { xs: '1.5rem', md: '2rem' },
+              letterSpacing: '-0.04em'
+            }}>
+              Order Complete
             </Typography>
-          </Box>
-          <Divider sx={{ marginTop: 2, backgroundColor: '#444' }} />
-        </Box>
-
-        {/* Thank You Message */}
-        <Box sx={{ marginTop: 4, textAlign: 'center' }}>
-          <Typography variant="body1" sx={{ color: '#ccc' }}>
-            Enjoy free listening to your purchased items!
-          </Typography>
-        </Box>
-      </Container>
-
-      {/* Continue Shopping Button */}
-      <Box sx={{ marginTop: 5 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleContinueShopping}
-          sx={{
-            padding: '12px 24px',
-            borderRadius: 3,
-            fontWeight: 500,
-            '&:hover': {
-              backgroundColor: '#FF4081',
-              transform: 'scale(1.05)',
-            },
-            transition: 'all 0.3s ease',
-          }}
-        >
-          Continue Shopping
-        </Button>
+          </Grid>
+          <Grid item>
+            <LibraryMusic sx={{ color: '#1DB954', fontSize: 32 }} />
+          </Grid>
+        </Grid>
       </Box>
-    </Box>
+
+      {/* Main Content */}
+      <Box sx={{ p: { xs: 2, md: 4 } }}>
+        <Grid container justifyContent="center">
+          <Grid item xs={12} md={8} lg={6}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              {/* Success Header */}
+              <Box sx={{ 
+                textAlign: 'center', 
+                mb: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+                <CheckCircle sx={{ 
+                  fontSize: 60, 
+ color: '#1DB954' 
+                }} />
+                <Typography variant="h5" sx={{ 
+                  fontWeight: 600, 
+                  color: '#1DB954', 
+                  mt: 2 
+                }}>
+                  Your Purchase was Successful!
+                </Typography>
+              </Box>
+
+              {/* Order Details */}
+              <Box sx={{ 
+                bgcolor: '#181818', 
+                borderRadius: 2, 
+                p: 3, 
+                boxShadow: '0 4px 12px rgba(0,0,0,0.3)', 
+                mb: 4 
+              }}>
+                <Typography variant="h6" sx={{ 
+                  fontWeight: 700, 
+                  color: '#1DB954', 
+                  mb: 2 
+                }}>
+                  Your Purchase Details
+                </Typography>
+
+                {orderDetails.map((item) => (
+                  <Box key={item.id} sx={{ 
+                    mb: 2, 
+                    p: 2, 
+                    borderRadius: 2, 
+                    bgcolor: '#222', 
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' } 
+                  }}>
+                    <Grid container alignItems="center" spacing={2}>
+                      <Grid item xs={3}>
+                        <Box
+                          component="img"
+                          src={item.coverUrl}
+                          alt={item.title}
+                          sx={{
+                            width: '100%',
+                            borderRadius: 1,
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="body1" sx={{ 
+                          fontWeight: 500, 
+                          color: '#fff' 
+                        }}>
+                          {item.title}
+                        </Typography>
+                        <Typography variant="body2" sx={{ 
+                          color: '#b3b3b3', 
+                          fontSize: '0.875rem' 
+                        }}>
+                          {item.artist}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Typography variant="body1" sx={{ 
+                          fontWeight: 700, 
+                          color: '#1DB954', 
+                          textAlign: 'right' 
+                        }}>
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                ))}
+              </Box>
+
+              {/* Price Breakdown */}
+              <Box sx={{ 
+                bgcolor: '#181818', 
+                borderRadius: 2, 
+                p: 3, 
+                boxShadow: '0 4px 12px rgba(0,0,0,0.3)', 
+                mb: 4 
+              }}>
+                <Typography variant="h6" sx={{ 
+                  fontWeight: 700, 
+                  color: '#1DB954', 
+                  mb: 2 
+                }}>
+                  Price Breakdown
+                </Typography>
+                <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', mb: 2 }} />
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
+                  <Typography variant="body1" sx={{ color: '#b3b3b3' }}>Total:</Typography>
+                  <Typography variant="body1">${total.toFixed(2)}</Typography>
+                </Box>
+              </Box>
+
+              {/* Success Message */}
+              <Box sx={{ 
+                mt: 4, 
+                p: 2, 
+                borderRadius: 2, 
+                bgcolor: 'rgba(29, 185, 84, 0.1)', 
+                textAlign: 'center' 
+              }}>
+                <Typography variant="body1" sx={{ 
+                  color: '#1DB954', 
+                  fontWeight: 500 
+                }}>
+                  Your music is now available in your library. Enjoy unlimited listening!
+                </Typography>
+              </Box>
+
+              {/* Action Buttons */}
+              <Box sx={{ 
+                mt: 4, 
+                display: 'flex', 
+                flexDirection: { xs: 'column', sm: 'row' }, 
+                gap: 2, 
+                justifyContent: 'center' 
+              }}>
+                <Button
+                  component={motion.button}
+                  whileHover={{ scale: 1.05 }}
+                  variant="contained"
+                  fullWidth
+                  onClick={() => navigate('/')}
+                  sx={{
+                    bgcolor: '#1DB954',
+                    color: '#fff',
+                    py: 1.5,
+                    borderRadius: 3,
+                    fontSize: '1rem',
+                    '&:hover': { bgcolor: '#1ED760' }
+                  }}
+                >
+                  Explore More Music
+                </Button>
+                <Button
+                  component={motion.button}
+                  whileHover={{ scale: 1.05 }}
+ variant="outlined"
+                  fullWidth
+                  onClick={() => navigate('/Library')}
+                  sx={{
+                    borderColor: '#444',
+                    color: '#fff',
+                    py: 1.5,
+                    borderRadius: 3,
+                    fontSize: '1rem',
+                    '&:hover': { borderColor: '#1DB954' }
+                  }}
+                >
+                  View Your Library
+                </Button>
+              </Box>
+            </motion.div>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 };
 

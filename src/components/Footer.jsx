@@ -1,30 +1,15 @@
-import { Box, Typography, Container, Grid, IconButton, } from '@mui/material';
+import { Box, Typography, Container, Grid, IconButton } from '@mui/material';
 import { Facebook, Instagram, Twitter, LinkedIn, KeyboardArrowUp } from '@mui/icons-material';
-import { motion, useScroll, useSpring } from 'framer-motion';
+import { motion,} from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { styled } from '@mui/material/styles';
-import theme from '../theme/theme';
 
-const FloatingShape = styled(motion.div)({
-  position: 'absolute',
-  borderRadius: '50%',
-  background: 'radial-gradient(circle, rgba(29,185,84,0.1) 0%, transparent 70%)',
-});
 
 const Footer = () => {
   const [showScroll, setShowScroll] = useState(false);
- 
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 500) setShowScroll(true);
-      else setShowScroll(false);
+      setShowScroll(window.scrollY > 500);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -36,168 +21,113 @@ const Footer = () => {
 
   return (
     <Box sx={{ 
-      position: 'relative',
-      backgroundColor: '#0a0a0a',
-      color: 'white',
-      overflow: 'hidden',
+      backgroundColor: '#121212',
+      color: '#ffffff',
+      borderTop: '1px solid rgba(255,255,255,0.1)',
       pt: 8,
       pb: 4
     }}>
-      {/* Animated Background Elements */}
-      <FloatingShape
-        animate={{
-          scale: [0.8, 1.2, 0.8],
-          x: [-50, 50, -50],
-          y: [0, 50, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: 'linear'
-        }}
-        style={{ width: 300, height: 300, top: -150, left: '20%' }}
-      />
-      
       <Container maxWidth="lg">
-        {/* Progress Bar */}
-        <motion.div
-          style={{
-            scaleX,
-            height: 4,
-            background: theme.palette.primary.main,
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            originX: 0,
-            zIndex: 9999
-          }}
-        />
-
         <Grid container spacing={4} sx={{ mb: 6 }}>
           {/* Company Info */}
           <Grid item xs={12} md={4}>
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Typography variant="h4" sx={{ 
-                fontWeight: 800,
-                mb: 2,
-                background: 'linear-gradient(45deg, #1DB954 30%, #1ED760 90%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}>
-                SingBae
-              </Typography>
-            </motion.div>
-            <Typography variant="body1" sx={{ 
-              color: '#aaa',
+            <Typography variant="h5" sx={{ 
+              fontWeight: 700,
+              mb: 3,
+              color: '#1DB954'
+            }}>
+              SingBae
+            </Typography>
+            <Typography variant="body2" sx={{ 
+              color: '#b3b3b3',
               lineHeight: 1.6,
-              position: 'relative',
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                bottom: -20,
-                left: 0,
-                width: '50%',
-                height: 2,
-                background: theme.palette.primary.main
-              }
+              maxWidth: 300
             }}>
               Where Music Meets Innovation. Experience premium audio quality with exclusive artist collaborations.
             </Typography>
           </Grid>
 
-          {/* Quick Links with Hover Effects */}
+          {/* Quick Links */}
           <Grid item xs={6} md={2}>
-            <Typography variant="h6" sx={{ 
+            <Typography variant="subtitle1" sx={{ 
               fontWeight: 600,
               mb: 3,
-              color: theme.palette.primary.main,
+              color: '#ffffff',
               textTransform: 'uppercase'
             }}>
-              Explore
+              Company
             </Typography>
-            {['Home', 'Shop', 'Artists', 'Events'].map((item) => (
-              <motion.div key={item} whileHover={{ x: 10 }}>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    color: '#ccc',
-                    mb: 1.5,
-                    cursor: 'pointer',
-                    '&:hover': { color: theme.palette.primary.main }
-                  }}
-                >
-                  {item}
-                </Typography>
-              </motion.div>
+            {['About', 'Jobs', 'For the Record'].map((item) => (
+              <Typography 
+                key={item}
+                variant="body2" 
+                sx={{ 
+                  color: '#b3b3b3',
+                  mb: 2,
+                  cursor: 'pointer',
+                  '&:hover': { color: '#1DB954' }
+                }}
+              >
+                {item}
+              </Typography>
             ))}
           </Grid>
 
           {/* Support Links */}
           <Grid item xs={6} md={2}>
-            <Typography variant="h6" sx={{ 
+            <Typography variant="subtitle1" sx={{ 
               fontWeight: 600,
               mb: 3,
-              color: theme.palette.primary.main,
+              color: '#ffffff',
               textTransform: 'uppercase'
             }}>
               Support
             </Typography>
-            {['Contact Us', 'FAQ', 'Shipping', 'Returns'].map((item) => (
-              <motion.div key={item} whileHover={{ x: 10 }}>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    color: '#ccc',
-                    mb: 1.5,
-                    cursor: 'pointer',
-                    '&:hover': { color: theme.palette.primary.main }
-                  }}
-                >
-                  {item}
-                </Typography>
-              </motion.div>
+            {['Help', 'Web Player', 'Free Mobile App'].map((item) => (
+              <Typography 
+                key={item}
+                variant="body2" 
+                sx={{ 
+                  color: '#b3b3b3',
+                  mb: 2,
+                  cursor: 'pointer',
+                  '&:hover': { color: '#1DB954' }
+                }}
+              >
+                {item}
+              </Typography>
             ))}
           </Grid>
 
-          {/* Social Media Section */}
+          {/* Social Media */}
           <Grid item xs={12} md={4}>
-            <Typography variant="h6" sx={{ 
+            <Typography variant="subtitle1" sx={{ 
               fontWeight: 600,
               mb: 3,
-              color: theme.palette.primary.main,
+              color: '#ffffff',
               textTransform: 'uppercase'
             }}>
-              Connect
+              Follow Us
             </Typography>
-            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', gap: 2 }}>
               {[
-                { icon: <Facebook />, color: '#3b5998' },
-                { icon: <Instagram />, color: '#e4405f' },
-                { icon: <Twitter />, color: '#00acee' },
-                { icon: <LinkedIn />, color: '#0077b5' }
+                { icon: <Instagram />, name: 'Instagram' },
+                { icon: <Twitter />, name: 'Twitter' },
+                { icon: <Facebook />, name: 'Facebook' },
+                { icon: <LinkedIn />, name: 'LinkedIn' }
               ].map((social, index) => (
-                <motion.div
+                <IconButton
                   key={index}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  sx={{
+                    color: '#b3b3b3',
+                    '&:hover': {
+                      color: '#1DB954',
+                      backgroundColor: 'rgba(255,255,255,0.1)'
+                    }
+                  }}
                 >
-                  <IconButton
-                    href="#"
-                    sx={{
-                      background: 'rgba(255,255,255,0.1)',
-                      backdropFilter: 'blur(10px)',
-                      color: 'white',
-                      transition: 'all 0.3s',
-                      '&:hover': {
-                        background: social.color,
-                        boxShadow: `0 0 20px ${social.color}`
-                      }
-                    }}
-                  >
-                    {social.icon}
-                  </IconButton>
-                </motion.div>
+                  {social.icon}
+                </IconButton>
               ))}
             </Box>
           </Grid>
@@ -205,32 +135,50 @@ const Footer = () => {
 
         {/* Copyright Section */}
         <Box sx={{ 
-          textAlign: 'center',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           pt: 4,
           borderTop: '1px solid rgba(255,255,255,0.1)',
-          position: 'relative'
+          flexDirection: { xs: 'column', md: 'row' },
+          gap: 2
         }}>
-          <motion.div
+          <Box sx={{ display: 'flex', gap: 4, order: { xs: 2, md: 1 } }}>
+            <Typography variant="caption" sx={{ color: '#b3b3b3' }}>
+              Legal
+            </Typography>
+            <Typography variant="caption" sx={{ color: '#b3b3b3' }}>
+              Privacy Center
+            </Typography>
+            <Typography variant="caption" sx={{ color: '#b3b3b3' }}>
+              Cookies
+            </Typography>
+          </Box>
+          
+          <Typography variant="caption" sx={{ 
+            color: '#b3b3b3',
+            order: { xs: 1, md: 2 }
+          }}>
+            &copy; {new Date().getFullYear()} SingBae Music
+          </Typography>
+
+          <motion.div 
             animate={{ opacity: showScroll ? 1 : 0 }}
-            style={{ position: 'absolute', left: '50%', top: -40 }}
+            style={{ order: 3 }}
           >
             <IconButton
               onClick={scrollToTop}
               sx={{
-                background: theme.palette.primary.main,
-                color: 'white',
+                color: '#ffffff',
+                backgroundColor: '#1DB954',
                 '&:hover': {
-                  background: theme.palette.primary.dark
+                  backgroundColor: '#1ED760'
                 }
               }}
             >
-              <KeyboardArrowUp fontSize="large" />
+              <KeyboardArrowUp />
             </IconButton>
           </motion.div>
-
-          <Typography variant="body2" sx={{ color: '#777', letterSpacing: 1 }}>
-            &copy; {new Date().getFullYear()} SingBae. Crafted with ♡ in Music City
-          </Typography>
         </Box>
       </Container>
     </Box>
